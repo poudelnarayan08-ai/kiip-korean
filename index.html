@@ -1,0 +1,624 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#534AB7">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="KIIP Korean">
+<title>KIIP Korean</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#F2F2F7;min-height:100vh;color:#1C1C1E}
+.pg{display:none;padding:16px;max-width:600px;margin:0 auto}
+.pg.on{display:block}
+
+.hdr{display:flex;align-items:center;gap:10px;margin-bottom:18px}
+.back{background:none;border:1px solid #C6C6C8;border-radius:8px;padding:6px 12px;font-size:13px;cursor:pointer;color:#6C6C70}
+.hdr-title{font-size:17px;font-weight:600;color:#1C1C1E}
+.hdr-sub{font-size:12px;color:#8E8E93;margin-left:auto}
+
+.home-hero{text-align:center;padding:32px 0 24px}
+.home-title{font-size:26px;font-weight:700;color:#1C1C1E;margin-bottom:6px}
+.app-badge{display:inline-block;background:#534AB7;color:#fff;font-size:12px;padding:3px 12px;border-radius:12px;margin-bottom:8px}
+.home-sub{font-size:14px;color:#8E8E93}
+
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+.card{background:#fff;border:1px solid #E5E5EA;border-radius:16px;padding:20px 16px;cursor:pointer;transition:transform 0.1s,box-shadow 0.1s}
+.card:active{transform:scale(0.97)}
+.card-num{font-size:32px;font-weight:700;color:#534AB7;margin-bottom:2px}
+.card-label{font-size:14px;font-weight:600;color:#1C1C1E;margin-bottom:2px}
+.card-sub{font-size:11px;color:#8E8E93;margin-bottom:10px}
+.card-pills{display:flex;gap:5px;flex-wrap:wrap}
+.pill{font-size:10px;padding:3px 8px;border-radius:8px;background:#F2F2F7;color:#8E8E93}
+.pill-p{background:#EEEDFE;color:#534AB7}
+
+.ch-card{background:#fff;border:1px solid #E5E5EA;border-radius:14px;padding:16px;cursor:pointer;margin-bottom:8px;display:flex;align-items:center;justify-content:space-between;transition:transform 0.1s}
+.ch-card:active{transform:scale(0.98)}
+.ch-num{font-size:11px;color:#8E8E93;margin-bottom:3px}
+.ch-title{font-size:15px;font-weight:600;color:#1C1C1E}
+.ch-stats{display:flex;gap:5px;margin-top:7px;flex-wrap:wrap}
+.ch-pill{font-size:10px;padding:2px 8px;border-radius:7px}
+.tag-w{background:#E6F1FB;color:#0C447C}
+.tag-g{background:#EEEDFE;color:#3C3489}
+.tag-n{background:#FEF3C7;color:#92400E}
+.tag-q{background:#DCFCE7;color:#166534}
+.ch-arrow{color:#C6C6C8;font-size:18px;font-weight:300}
+
+.sec-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+.sec-title{font-size:13px;font-weight:600;color:#8E8E93;text-transform:uppercase;letter-spacing:0.04em}
+.add-btn{padding:6px 14px;background:#534AB7;color:#fff;border:none;border-radius:8px;font-size:12px;cursor:pointer;font-weight:600}
+
+.form-box{background:#fff;border:1px solid #E5E5EA;border-radius:14px;padding:16px;margin-bottom:12px;display:none}
+.form-box.open{display:block}
+.form-box input,.form-box textarea{display:block;width:100%;padding:10px 12px;border:1px solid #E5E5EA;border-radius:10px;font-size:14px;margin-bottom:8px;background:#F2F2F7;color:#1C1C1E;font-family:inherit;outline:none}
+.form-box input:focus,.form-box textarea:focus{border-color:#534AB7;background:#fff}
+.form-box textarea{resize:vertical;min-height:60px}
+.form-row{display:flex;gap:7px}
+.form-row input{flex:1}
+.save-btn{width:100%;padding:12px;background:#534AB7;color:#fff;border:none;border-radius:10px;font-size:14px;cursor:pointer;font-weight:600;margin-bottom:6px}
+.cancel-btn{width:100%;padding:10px;background:none;border:1px solid #E5E5EA;border-radius:10px;font-size:14px;cursor:pointer;color:#8E8E93}
+
+.item-card{background:#fff;border:1px solid #E5E5EA;border-radius:12px;padding:14px;margin-bottom:8px}
+.item-top{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.item-k{font-size:22px;font-weight:600;color:#1C1C1E}
+.item-r{font-size:12px;color:#8E8E93;margin-top:2px}
+.item-n{font-size:14px;color:#3C3C43;margin-top:6px}
+.item-ex{font-size:12px;color:#8E8E93;margin-top:6px;border-top:1px solid #F2F2F7;padding-top:8px;line-height:1.6}
+.del-btn{background:none;border:none;color:#C6C6C8;font-size:15px;cursor:pointer;padding:2px 6px;flex-shrink:0}
+
+.g-pattern{font-size:15px;color:#534AB7;font-weight:600;margin-bottom:4px}
+.g-meaning{font-size:13px;color:#8E8E93;margin-bottom:10px;line-height:1.5}
+.g-ex-row{margin-bottom:6px}
+.g-ex-k{font-size:13px;color:#1C1C1E;font-weight:500}
+.g-ex-n{font-size:12px;color:#8E8E93}
+
+.note-card{background:#fff;border:1px solid #E5E5EA;border-left:4px solid #534AB7;border-radius:0 12px 12px 0;padding:14px;margin-bottom:8px}
+.note-title{font-size:14px;font-weight:600;color:#1C1C1E;margin-bottom:6px}
+.note-body{font-size:13px;color:#3C3C43;line-height:1.7}
+.note-date{font-size:11px;color:#C6C6C8;margin-top:8px}
+
+.study-menu{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:4px}
+.study-btn{background:#fff;border:1px solid #E5E5EA;border-radius:14px;padding:18px 12px;text-align:center;cursor:pointer;transition:transform 0.1s}
+.study-btn:active{transform:scale(0.96)}
+.study-icon{font-size:22px;margin-bottom:6px}
+.study-label{font-size:13px;font-weight:600;color:#1C1C1E}
+.study-count{font-size:11px;color:#8E8E93;margin-top:3px}
+
+.flash-bar{height:5px;background:#E5E5EA;border-radius:3px;margin-bottom:6px}
+.flash-fill{height:100%;background:#534AB7;border-radius:3px;transition:width 0.3s}
+.flash-prog{font-size:12px;color:#8E8E93;text-align:center;margin-bottom:14px}
+.flash-card{background:#fff;border:1px solid #E5E5EA;border-radius:18px;min-height:190px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:28px 20px;text-align:center;cursor:pointer;margin-bottom:12px;transition:transform 0.1s}
+.flash-card:active{transform:scale(0.98)}
+.flash-hint{font-size:11px;color:#C6C6C8;margin-bottom:12px}
+.flash-main{font-size:36px;font-weight:700;color:#1C1C1E;margin-bottom:8px}
+.flash-sub{font-size:14px;color:#8E8E93}
+.flash-back{background:#534AB7;border-color:#534AB7}
+.flash-back .flash-main{color:#fff;font-size:22px}
+.flash-back .flash-sub{color:#AFA9EC;font-size:12px}
+.flash-back .flash-hint{color:#AFA9EC}
+.flash-nav{display:flex;gap:8px;justify-content:center}
+.flash-nav button{padding:10px 22px;border:1px solid #E5E5EA;border-radius:10px;font-size:14px;cursor:pointer;background:#F2F2F7;color:#1C1C1E;font-weight:500}
+.flash-nav .f-next{background:#534AB7;color:#fff;border-color:#534AB7}
+.fl-mode-row{margin-top:12px;text-align:center}
+.fl-mode-row select{padding:7px 12px;border-radius:9px;border:1px solid #E5E5EA;background:#F2F2F7;color:#1C1C1E;font-size:13px;outline:none}
+
+.quiz-q-card{background:#fff;border:1px solid #E5E5EA;border-radius:16px;padding:24px 16px;text-align:center;margin-bottom:14px}
+.quiz-word{font-size:34px;font-weight:700;color:#1C1C1E;margin-bottom:6px}
+.quiz-hint{font-size:13px;color:#8E8E93}
+.quiz-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:10px}
+.qopt{padding:14px 8px;border:1px solid #E5E5EA;border-radius:12px;font-size:13px;cursor:pointer;background:#F2F2F7;color:#1C1C1E;text-align:center;transition:all 0.12s;font-weight:500}
+.qopt:active{transform:scale(0.97)}
+.qopt.correct{background:#DCFCE7;border-color:#16A34A;color:#166534}
+.qopt.wrong{background:#FEE2E2;border-color:#DC2626;color:#991B1B}
+.quiz-fb{font-size:13px;color:#8E8E93;text-align:center;min-height:20px;margin-bottom:10px;font-weight:500}
+.quiz-nxt{width:100%;padding:13px;background:#534AB7;color:#fff;border:none;border-radius:12px;font-size:15px;cursor:pointer;font-weight:600}
+.qscore{display:flex;gap:8px;justify-content:center;margin-bottom:14px}
+.qsp{padding:6px 16px;border-radius:16px;font-size:13px;font-weight:600}
+.qs-c{background:#DCFCE7;color:#166534}
+.qs-w{background:#FEE2E2;color:#991B1B}
+.qs-t{background:#F2F2F7;color:#8E8E93}
+.quiz-done{text-align:center;padding:36px 16px}
+.qd-num{font-size:48px;font-weight:700;color:#534AB7}
+.qd-lbl{font-size:15px;color:#8E8E93;margin-bottom:20px;line-height:1.6}
+
+.match-grid{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+.match-item{padding:13px 8px;border:1px solid #E5E5EA;border-radius:12px;font-size:13px;cursor:pointer;background:#F2F2F7;color:#1C1C1E;text-align:center;transition:all 0.15s;font-weight:500}
+.match-item.sel{border-color:#534AB7;background:#EEEDFE;color:#534AB7}
+.match-item.matched{background:#DCFCE7;border-color:#16A34A;color:#166534;pointer-events:none}
+.match-item.wrong-flash{background:#FEE2E2;border-color:#DC2626}
+
+.type-input{width:100%;padding:12px 14px;border:1px solid #E5E5EA;border-radius:12px;font-size:16px;margin-bottom:10px;background:#F2F2F7;color:#1C1C1E;font-family:inherit;outline:none}
+.type-input:focus{border-color:#534AB7;background:#fff}
+.type-check{width:100%;padding:12px;background:#534AB7;color:#fff;border:none;border-radius:12px;font-size:14px;cursor:pointer;margin-bottom:8px;font-weight:600}
+.type-reveal{width:100%;padding:10px;background:none;border:1px solid #E5E5EA;border-radius:12px;font-size:13px;cursor:pointer;color:#8E8E93}
+
+.empty{text-align:center;padding:36px 16px;color:#8E8E93;font-size:14px;line-height:1.6}
+.empty-hint{font-size:12px;color:#C6C6C8;margin-top:6px}
+.add-ch-btn{width:100%;padding:14px;background:#fff;border:1px dashed #C6C6C8;border-radius:14px;font-size:14px;cursor:pointer;color:#8E8E93;margin-top:6px;transition:all 0.15s}
+.add-ch-btn:hover{border-color:#534AB7;color:#534AB7}
+</style>
+</head>
+<body>
+
+<div id="pg-home" class="pg on">
+  <div class="home-hero">
+    <div class="app-badge">KIIP Self Study</div>
+    <div class="home-title">Korean Learning</div>
+    <div class="home-sub">आफ्नो level छान्नुस् — Level choose garnus</div>
+  </div>
+  <div class="grid2" id="home-grid"></div>
+</div>
+
+<div id="pg-chapters" class="pg">
+  <div class="hdr">
+    <button class="back" onclick="nav('home')">← Home</button>
+    <div class="hdr-title" id="ch-hdr-title">Level 1</div>
+    <div class="hdr-sub" id="ch-hdr-sub"></div>
+  </div>
+  <div id="ch-list"></div>
+  <button class="add-ch-btn" onclick="toggleForm('ch-form')">+ Naya Chapter add garne</button>
+  <div class="form-box" id="ch-form" style="margin-top:10px">
+    <input id="ch-name" placeholder="Chapter title (e.g. Daily Life)">
+    <input id="ch-topic" placeholder="Topic (optional)">
+    <button class="save-btn" onclick="saveChapter()">Save Chapter</button>
+    <button class="cancel-btn" onclick="toggleForm('ch-form')">Cancel</button>
+  </div>
+</div>
+
+<div id="pg-study" class="pg">
+  <div class="hdr">
+    <button class="back" onclick="nav('chapters')">← Back</button>
+    <div><div class="hdr-title" id="st-hdr-title"></div><div style="font-size:11px;color:#8E8E93" id="st-hdr-sub"></div></div>
+  </div>
+  <div class="study-menu" id="study-menu"></div>
+</div>
+
+<div id="pg-words" class="pg">
+  <div class="hdr">
+    <button class="back" onclick="nav('study')">← Back</button>
+    <div class="hdr-title">Word Meaning</div>
+  </div>
+  <div class="sec-hdr">
+    <span class="sec-title" id="w-sec-title"></span>
+    <button class="add-btn" onclick="toggleForm('w-form')">+ Add</button>
+  </div>
+  <div class="form-box" id="w-form">
+    <div class="form-row">
+      <input id="wi-k" placeholder="Korean (예: 사랑)">
+      <input id="wi-r" placeholder="Romanization">
+    </div>
+    <input id="wi-n" placeholder="Nepali meaning">
+    <textarea id="wi-ex" placeholder="Example sentence (optional)"></textarea>
+    <button class="save-btn" onclick="saveWord()">Save</button>
+    <button class="cancel-btn" onclick="toggleForm('w-form')">Cancel</button>
+  </div>
+  <div id="words-list"></div>
+</div>
+
+<div id="pg-grammar" class="pg">
+  <div class="hdr">
+    <button class="back" onclick="nav('study')">← Back</button>
+    <div class="hdr-title">Grammar</div>
+  </div>
+  <div class="sec-hdr">
+    <span class="sec-title" id="g-sec-title"></span>
+    <button class="add-btn" onclick="toggleForm('g-form')">+ Add</button>
+  </div>
+  <div class="form-box" id="g-form">
+    <input id="gi-t" placeholder="Title (e.g. N + 이에요/예요)">
+    <input id="gi-pat" placeholder="Pattern">
+    <textarea id="gi-m" placeholder="Nepali maa explanation"></textarea>
+    <div class="form-row">
+      <input id="gi-e1k" placeholder="Example 1 Korean">
+      <input id="gi-e1n" placeholder="Example 1 Nepali">
+    </div>
+    <div class="form-row">
+      <input id="gi-e2k" placeholder="Example 2 Korean (opt)">
+      <input id="gi-e2n" placeholder="Example 2 Nepali">
+    </div>
+    <button class="save-btn" onclick="saveGrammar()">Save</button>
+    <button class="cancel-btn" onclick="toggleForm('g-form')">Cancel</button>
+  </div>
+  <div id="grammar-list"></div>
+</div>
+
+<div id="pg-notes" class="pg">
+  <div class="hdr">
+    <button class="back" onclick="nav('study')">← Back</button>
+    <div class="hdr-title">Notes</div>
+  </div>
+  <div class="sec-hdr">
+    <span class="sec-title" id="n-sec-title"></span>
+    <button class="add-btn" onclick="toggleForm('n-form')">+ Add Note</button>
+  </div>
+  <div class="form-box" id="n-form">
+    <input id="ni-t" placeholder="Note title">
+    <textarea id="ni-b" placeholder="Important points, tips, examples..."></textarea>
+    <button class="save-btn" onclick="saveNote()">Save</button>
+    <button class="cancel-btn" onclick="toggleForm('n-form')">Cancel</button>
+  </div>
+  <div id="notes-list"></div>
+</div>
+
+<div id="pg-flash" class="pg">
+  <div class="hdr">
+    <button class="back" onclick="nav('study')">← Back</button>
+    <div class="hdr-title">Flashcards</div>
+  </div>
+  <div class="flash-bar"><div class="flash-fill" id="fl-fill" style="width:0%"></div></div>
+  <div class="flash-prog" id="fl-prog">0 / 0</div>
+  <div id="fl-card-wrap"></div>
+  <div class="flash-nav">
+    <button onclick="flashPrev()">← Agadi</button>
+    <button onclick="flashFlip()">Flip</button>
+    <button class="f-next" onclick="flashNext()">Pachadi →</button>
+  </div>
+  <div class="fl-mode-row">
+    <select id="fl-mode" onchange="initFlash()">
+      <option value="words">Words</option>
+      <option value="grammar">Grammar</option>
+    </select>
+  </div>
+</div>
+
+<div id="pg-quiz" class="pg">
+  <div class="hdr">
+    <button class="back" onclick="nav('study')">← Back</button>
+    <div class="hdr-title">MCQ Quiz</div>
+  </div>
+  <div class="qscore">
+    <span class="qsp qs-c" id="qs-c">✓ 0</span>
+    <span class="qsp qs-w" id="qs-w">✗ 0</span>
+    <span class="qsp qs-t" id="qs-t">0/0</span>
+  </div>
+  <div id="quiz-body"></div>
+</div>
+
+<div id="pg-match" class="pg">
+  <div class="hdr">
+    <button class="back" onclick="nav('study')">← Back</button>
+    <div class="hdr-title">Match Game</div>
+  </div>
+  <div style="font-size:13px;color:#8E8E93;margin-bottom:12px">Korean ra Nepali pair match garnus!</div>
+  <div style="display:flex;gap:8px;margin-bottom:12px">
+    <span class="qsp qs-c" id="ms-c">✓ 0</span>
+    <span class="qsp qs-t" id="ms-t">0/0 matched</span>
+  </div>
+  <div id="match-body"></div>
+</div>
+
+<div id="pg-type" class="pg">
+  <div class="hdr">
+    <button class="back" onclick="nav('study')">← Back</button>
+    <div class="hdr-title">Type It</div>
+  </div>
+  <div style="font-size:13px;color:#8E8E93;margin-bottom:12px">Nepali meaning type garnus!</div>
+  <div class="qscore">
+    <span class="qsp qs-c" id="ts-c">✓ 0</span>
+    <span class="qsp qs-w" id="ts-w">✗ 0</span>
+    <span class="qsp qs-t" id="ts-t">0/0</span>
+  </div>
+  <div id="type-body"></div>
+</div>
+
+<script>
+const SEED={
+  chapters:{
+    1:[{id:'1-1',title:'Chapter 1: Greetings & Introduction',topic:'Greetings'},{id:'1-2',title:'Chapter 2: Numbers & Date',topic:'Numbers'},{id:'1-3',title:'Chapter 3: Daily Life',topic:'Daily Life'}],
+    2:[{id:'2-1',title:'Chapter 1: Family',topic:'Family'},{id:'2-2',title:'Chapter 2: Work & Office',topic:'Work'}],
+    3:[{id:'3-1',title:'Chapter 1: Health',topic:'Health'},{id:'3-2',title:'Chapter 2: Society',topic:'Society'}],
+    4:[{id:'4-1',title:'Chapter 1: Culture',topic:'Culture'}],
+    5:[{id:'5-1',title:'Chapter 1: Advanced Topics',topic:'Advanced'}]
+  },
+  words:{
+    '1-1':[{id:'w1',k:'안녕하세요',r:'Annyeonghaseyo',n:'Namaste / नमस्ते',ex:'안녕하세요!\nNameste!'},{id:'w2',k:'감사합니다',r:'Gamsahamnida',n:'Dhanyabad / धन्यवाद',ex:'감사합니다!\nDhanyabad!'},{id:'w3',k:'이름',r:'Ireum',n:'Naam / नाम',ex:'이름이 뭐예요?\nTero naam ke ho?'},{id:'w4',k:'저는',r:'Jeoneun',n:'Ma — subject marker',ex:'저는 학생이에요\nMa student ho'},{id:'w5',k:'반갑습니다',r:'Bangapseumnida',n:'Bhetna paauda khusi lagyo',ex:'반갑습니다!\nBhetna paauda khusi lagyo!'}],
+    '1-2':[{id:'w6',k:'일',r:'Il',n:'Ek / एक',ex:'일 층\nPahilo talla'},{id:'w7',k:'이',r:'I',n:'Dui / दुई',ex:'이 명\nDui jana'},{id:'w8',k:'오늘',r:'Oneul',n:'Aaja / आज',ex:'오늘 날씨가 좋아요\nAaja mausam ramro chha'},{id:'w9',k:'내일',r:'Naeil',n:'Bholi / भोलि',ex:'내일 만나요\nBholi bhetaula'}],
+    '1-3':[{id:'w10',k:'물',r:'Mul',n:'Paani / पानी',ex:'물 주세요\nPaani dinus'},{id:'w11',k:'밥',r:'Bap',n:'Bhat / भात',ex:'밥 먹어요\nBhat khaanchhu'},{id:'w12',k:'집',r:'Jip',n:'Ghar / घर',ex:'집에 가요\nGhar jaanchhu'}],
+    '2-1':[{id:'w13',k:'가족',r:'Gajok',n:'Pariwar / परिवार',ex:'가족이 몇 명이에요?\nPariwar maa kati jana chha?'},{id:'w14',k:'어머니',r:'Eomeoni',n:'Aama / आमा',ex:'어머니가 좋아요\nMero aama ramri hunu huncha'}],
+    '2-2':[{id:'w15',k:'회사',r:'Hoesa',n:'Company / कम्पनी',ex:'회사에 가요\nCompany jaanchhu'},{id:'w16',k:'일하다',r:'Ilhada',n:'Kaam garnu',ex:'열심히 일해요\nMehnat gari kaam garachhu'}]
+  },
+  grammar:{
+    '1-1':[{id:'g1',title:'N + 이에요/예요',pattern:'[noun]+이에요 (cons) / 예요 (vowel)',meaning:'Hunu — "ho" jastai',ex:[{k:'학생이에요',n:'Student ho'},{k:'이름이 수지예요',n:'Naam Suji ho'}]},{id:'g2',title:'N + 은/는 (topic marker)',pattern:'[noun]+은 (cons) / 는 (vowel)',meaning:'Topic dekhaauchha',ex:[{k:'저는 한국어를 배워요',n:'Ma Korean sikchhhu'}]}],
+    '1-2':[{id:'g3',title:'N + 이/가 (subject marker)',pattern:'[noun]+이 (cons) / 가 (vowel)',meaning:'Subject dekhaauchha',ex:[{k:'날씨가 좋아요',n:'Mausam ramro chha'}]}],
+    '1-3':[{id:'g4',title:'V + 아/어요 (present)',pattern:'[verb stem]+아요/어요',meaning:'Present tense — "garcha" jastai',ex:[{k:'먹어요',n:'Khanchhu'},{k:'가요',n:'Jaanchhu'}]},{id:'g5',title:'-고 싶다 (want to)',pattern:'[verb stem]+고 싶다',meaning:'Chahanu — "man lagchha"',ex:[{k:'가고 싶어요',n:'Jaana man lagchha'}]}],
+    '2-1':[{id:'g6',title:'N + 의 (possessive)',pattern:'[noun]+의',meaning:'Ko/ki/ka — ownership',ex:[{k:'저의 가족',n:'Mero pariwar'}]}],
+    '2-2':[{id:'g7',title:'-(으)ㄹ 수 있다 (can)',pattern:'[verb stem]+(으)ㄹ 수 있다',meaning:'Saknu — "garna sakchhu"',ex:[{k:'할 수 있어요',n:'Garna sakchhu'}]}]
+  },
+  notes:{
+    '1-1':[{id:'n1',title:'Tip: Formal vs Informal',body:'해요 (haeyo) = everyday polite\n합니다 (hamnida) = very formal\nKIIP exam maa 합니다 use garnus!',date:'2025-01-01'}]
+  }
+};
+
+const LN={1:'Beginner',2:'Elementary',3:'Intermediate',4:'Upper-Intermediate',5:'Advanced'};
+let curLvl=1,curCh=null;
+let flashItems=[],flashIdx=0,flashShowing='front';
+let quizItems=[],quizIdx=0,quizScore={c:0,w:0},quizAnswered=false,quizAllItems=[];
+let matchItems=[],matchMatched=new Set(),matchSelIdx=null,matchSelSide=null;
+let typeItems=[],typeIdx=0,typeScore={c:0,w:0},typeAnswered=false;
+
+function sk(t,id){return'kiip_'+t+'_'+id}
+function load(t,id){try{const r=localStorage.getItem(sk(t,id));if(r)return JSON.parse(r)}catch(e){}return(SEED[t]&&SEED[t][id])?SEED[t][id].map(x=>({...x})):[]}
+function save(t,id,d){try{localStorage.setItem(sk(t,id),JSON.stringify(d))}catch(e){}}
+function loadChapters(lvl){try{const r=localStorage.getItem('kiip_ch_'+lvl);if(r)return JSON.parse(r)}catch(e){}return(SEED.chapters[lvl]||[]).map(x=>({...x}))}
+function saveChapters(lvl,d){try{localStorage.setItem('kiip_ch_'+lvl,JSON.stringify(d))}catch(e){}}
+
+function nav(p){
+  document.querySelectorAll('.pg').forEach(x=>x.classList.remove('on'));
+  document.getElementById('pg-'+p).classList.add('on');
+  window.scrollTo(0,0);
+  if(p==='home')renderHome();
+  else if(p==='chapters')renderChapters();
+  else if(p==='study')renderStudy();
+  else if(p==='words')renderWords();
+  else if(p==='grammar')renderGrammar();
+  else if(p==='notes')renderNotes();
+  else if(p==='flash')initFlash();
+  else if(p==='quiz')startQuiz();
+  else if(p==='match')startMatch();
+  else if(p==='type')startType();
+}
+
+function toggleForm(id){document.getElementById(id).classList.toggle('open')}
+
+function renderHome(){
+  const g=document.getElementById('home-grid');g.innerHTML='';
+  for(let l=1;l<=5;l++){
+    const chs=loadChapters(l);
+    const tw=chs.reduce((a,c)=>a+load('words',c.id).length,0);
+    const tg=chs.reduce((a,c)=>a+load('grammar',c.id).length,0);
+    const d=document.createElement('div');
+    d.className='card';
+    d.innerHTML=`<div class="card-num">${l}</div><div class="card-label">KIIP Level ${l}</div><div class="card-sub">${LN[l]}</div><div class="card-pills"><span class="pill">${chs.length} ch</span><span class="pill">${tw} words</span><span class="pill pill-p">${tg} grammar</span></div>`;
+    d.onclick=()=>{curLvl=l;nav('chapters')};
+    g.appendChild(d);
+  }
+}
+
+function renderChapters(){
+  document.getElementById('ch-hdr-title').textContent='Level '+curLvl+' — '+LN[curLvl];
+  const chs=loadChapters(curLvl);
+  document.getElementById('ch-hdr-sub').textContent=chs.length+' chapters';
+  const c=document.getElementById('ch-list');
+  if(!chs.length){c.innerHTML='<div class="empty">Chapter chhaina.<div class="empty-hint">Tala button tap garnus</div></div>';return}
+  c.innerHTML=chs.map((ch,i)=>{
+    const w=load('words',ch.id).length,g=load('grammar',ch.id).length,n=load('notes',ch.id).length;
+    return`<div class="ch-card" onclick="curCh='${ch.id}';nav('study')"><div><div class="ch-num">Ch ${i+1}${ch.topic?' · '+ch.topic:''}</div><div class="ch-title">${ch.title.replace(/Chapter \d+: /,'')}</div><div class="ch-stats"><span class="ch-pill tag-w">${w} words</span><span class="ch-pill tag-g">${g} grammar</span><span class="ch-pill tag-n">${n} notes</span></div></div><div class="ch-arrow">›</div></div>`;
+  }).join('');
+}
+
+function saveChapter(){
+  const name=document.getElementById('ch-name').value.trim();
+  if(!name){alert('Chapter title chaahiyo!');return}
+  const chs=loadChapters(curLvl);
+  const id=curLvl+'-ch'+Date.now();
+  chs.push({id,title:'Chapter '+(chs.length+1)+': '+name,topic:document.getElementById('ch-topic').value.trim()});
+  saveChapters(curLvl,chs);
+  document.getElementById('ch-name').value='';document.getElementById('ch-topic').value='';
+  toggleForm('ch-form');renderChapters();
+}
+
+function getChTitle(){const ch=loadChapters(curLvl).find(x=>x.id===curCh);return ch?ch.title:'Chapter'}
+
+function renderStudy(){
+  const ch=getChTitle();
+  document.getElementById('st-hdr-title').textContent=ch.replace(/Chapter \d+: /,'');
+  document.getElementById('st-hdr-sub').textContent='Level '+curLvl+' · '+ch.split(':')[0];
+  const w=load('words',curCh).length,g=load('grammar',curCh).length,n=load('notes',curCh).length;
+  const menu=document.getElementById('study-menu');
+  menu.innerHTML='';
+  [{icon:'가',label:'Word Meaning',count:w+' words',pg:'words'},{icon:'문법',label:'Grammar',count:g+' patterns',pg:'grammar'},{icon:'📝',label:'Notes',count:n+' notes',pg:'notes'},{icon:'🃏',label:'Flashcard',count:'Flip & study',pg:'flash'},{icon:'❓',label:'MCQ Quiz',count:'4 options',pg:'quiz'},{icon:'🔗',label:'Match Game',count:'Pair match',pg:'match'},{icon:'✍️',label:'Type It',count:'Type answer',pg:'type'}].forEach(it=>{
+    const d=document.createElement('div');d.className='study-btn';
+    d.innerHTML=`<div class="study-icon">${it.icon}</div><div class="study-label">${it.label}</div><div class="study-count">${it.count}</div>`;
+    d.onclick=()=>nav(it.pg);menu.appendChild(d);
+  });
+}
+
+function renderWords(){
+  const words=load('words',curCh);
+  document.getElementById('w-sec-title').textContent=words.length+' words';
+  const c=document.getElementById('words-list');
+  if(!words.length){c.innerHTML='<div class="empty">Words chhaina.<div class="empty-hint">+ Add tap garnus</div></div>';return}
+  c.innerHTML=words.map((w,i)=>`<div class="item-card"><div class="item-top"><div><div class="item-k">${w.k}</div><div class="item-r">${w.r||''}</div></div><button class="del-btn" onclick="delItem('words',${i})">✕</button></div><div class="item-n">${w.n}</div>${w.ex?'<div class="item-ex">'+w.ex.replace(/\n/g,'<br>')+'</div>':''}</div>`).join('');
+}
+
+function saveWord(){
+  const k=document.getElementById('wi-k').value.trim(),n=document.getElementById('wi-n').value.trim();
+  if(!k||!n){alert('Korean ra Nepali meaning chaahiyo!');return}
+  const words=load('words',curCh);
+  words.push({id:'w'+Date.now(),k,r:document.getElementById('wi-r').value.trim(),n,ex:document.getElementById('wi-ex').value.trim()});
+  save('words',curCh,words);
+  ['wi-k','wi-r','wi-n','wi-ex'].forEach(id=>document.getElementById(id).value='');
+  toggleForm('w-form');renderWords();
+}
+
+function renderGrammar(){
+  const grammar=load('grammar',curCh);
+  document.getElementById('g-sec-title').textContent=grammar.length+' patterns';
+  const c=document.getElementById('grammar-list');
+  if(!grammar.length){c.innerHTML='<div class="empty">Grammar chhaina.<div class="empty-hint">+ Add tap garnus</div></div>';return}
+  c.innerHTML=grammar.map((g,i)=>{
+    const ex=(g.ex||[]).map(e=>`<div class="g-ex-row"><div class="g-ex-k">${e.k}</div><div class="g-ex-n">${e.n}</div></div>`).join('');
+    return`<div class="item-card"><div class="item-top"><div><div style="font-size:15px;font-weight:600;margin-bottom:3px">${g.title}</div><div class="g-pattern">${g.pattern||''}</div></div><button class="del-btn" onclick="delItem('grammar',${i})">✕</button></div><div class="g-meaning">${g.meaning||''}</div>${ex?'<div style="border-top:1px solid #F2F2F7;padding-top:8px;margin-top:8px">'+ex+'</div>':''}</div>`;
+  }).join('');
+}
+
+function saveGrammar(){
+  const title=document.getElementById('gi-t').value.trim(),meaning=document.getElementById('gi-m').value.trim();
+  if(!title||!meaning){alert('Title ra explanation chaahiyo!');return}
+  const ex=[];
+  const e1k=document.getElementById('gi-e1k').value.trim(),e1n=document.getElementById('gi-e1n').value.trim();
+  if(e1k&&e1n)ex.push({k:e1k,n:e1n});
+  const e2k=document.getElementById('gi-e2k').value.trim(),e2n=document.getElementById('gi-e2n').value.trim();
+  if(e2k&&e2n)ex.push({k:e2k,n:e2n});
+  const g=load('grammar',curCh);
+  g.push({id:'g'+Date.now(),title,pattern:document.getElementById('gi-pat').value.trim(),meaning,ex});
+  save('grammar',curCh,g);
+  ['gi-t','gi-pat','gi-m','gi-e1k','gi-e1n','gi-e2k','gi-e2n'].forEach(id=>document.getElementById(id).value='');
+  toggleForm('g-form');renderGrammar();
+}
+
+function renderNotes(){
+  const notes=load('notes',curCh);
+  document.getElementById('n-sec-title').textContent=notes.length+' notes';
+  const c=document.getElementById('notes-list');
+  if(!notes.length){c.innerHTML='<div class="empty">Notes chhaina.<div class="empty-hint">Important tips yaahan lekhnus</div></div>';return}
+  c.innerHTML=notes.map((n,i)=>`<div class="note-card"><div class="item-top"><div class="note-title">${n.title}</div><button class="del-btn" onclick="delItem('notes',${i})">✕</button></div><div class="note-body">${n.body.replace(/\n/g,'<br>')}</div><div class="note-date">${n.date||''}</div></div>`).join('');
+}
+
+function saveNote(){
+  const t=document.getElementById('ni-t').value.trim(),b=document.getElementById('ni-b').value.trim();
+  if(!t||!b){alert('Title ra content chaahiyo!');return}
+  const notes=load('notes',curCh);
+  notes.push({id:'n'+Date.now(),title:t,body:b,date:new Date().toLocaleDateString()});
+  save('notes',curCh,notes);
+  document.getElementById('ni-t').value='';document.getElementById('ni-b').value='';
+  toggleForm('n-form');renderNotes();
+}
+
+function delItem(type,i){
+  if(!confirm('Delete garnu sure chha?'))return;
+  const d=load(type,curCh);d.splice(i,1);save(type,curCh,d);
+  if(type==='words')renderWords();
+  else if(type==='grammar')renderGrammar();
+  else renderNotes();
+}
+
+function initFlash(){
+  const mode=document.getElementById('fl-mode').value;
+  const data=load(mode,curCh);
+  if(!data.length){document.getElementById('fl-card-wrap').innerHTML='<div class="empty">'+mode+' chhaina! Pahila add garnus.</div>';return}
+  flashItems=[...data].sort(()=>Math.random()-0.5);flashIdx=0;flashShowing='front';renderFlashCard();
+}
+
+function renderFlashCard(){
+  const item=flashItems[flashIdx],mode=document.getElementById('fl-mode').value;
+  const pct=Math.round((flashIdx+1)/flashItems.length*100);
+  document.getElementById('fl-fill').style.width=pct+'%';
+  document.getElementById('fl-prog').textContent=(flashIdx+1)+' / '+flashItems.length;
+  const wrap=document.getElementById('fl-card-wrap');
+  if(flashShowing==='front'){
+    const main=mode==='words'?item.k:(item.pattern||item.title);
+    const sub=mode==='words'?(item.r||''):item.title;
+    wrap.innerHTML=`<div class="flash-card" onclick="flashFlip()"><div class="flash-hint">👆 Tap to flip</div><div class="flash-main">${main}</div><div class="flash-sub">${sub}</div></div>`;
+  } else {
+    const main=mode==='words'?item.n:item.meaning;
+    const sub=mode==='words'?(item.ex||'').replace(/\n/g,' · '):(item.ex||[]).map(e=>e.k).join(' / ');
+    wrap.innerHTML=`<div class="flash-card flash-back" onclick="flashFlip()"><div class="flash-hint">👆 Tap to flip back</div><div class="flash-main">${main}</div><div class="flash-sub">${sub}</div></div>`;
+  }
+}
+
+function flashFlip(){flashShowing=flashShowing==='front'?'back':'front';renderFlashCard()}
+function flashNext(){flashIdx=(flashIdx+1)%flashItems.length;flashShowing='front';renderFlashCard()}
+function flashPrev(){flashIdx=(flashIdx-1+flashItems.length)%flashItems.length;flashShowing='front';renderFlashCard()}
+
+function startQuiz(){
+  const w=load('words',curCh).map(x=>({...x,type:'word'}));
+  const g=load('grammar',curCh).map(x=>({...x,type:'grammar'}));
+  quizAllItems=[...w,...g];
+  if(quizAllItems.length<2){document.getElementById('quiz-body').innerHTML='<div class="empty">Kam se kam 2 words/grammar chaahiyo quiz ko lagi!</div>';return}
+  quizItems=[...quizAllItems].sort(()=>Math.random()-0.5).slice(0,Math.min(10,quizAllItems.length));
+  quizIdx=0;quizScore={c:0,w:0};quizAnswered=false;updateQScore();renderQuizQ();
+}
+
+function renderQuizQ(){
+  const body=document.getElementById('quiz-body');
+  if(quizIdx>=quizItems.length){
+    const pct=Math.round(quizScore.c/quizItems.length*100);
+    body.innerHTML=`<div class="quiz-done"><div class="qd-num">${quizScore.c}/${quizItems.length}</div><div class="qd-lbl">${pct}% thik!<br>${pct>=80?'🎉 Saabash! Ramro bhayo!':pct>=50?'👍 Ramro, pheri gara!':'📚 Aru padhnu parchha!'}</div><button class="quiz-nxt" onclick="startQuiz()">Dobara khelne</button></div>`;
+    return;
+  }
+  const item=quizItems[quizIdx];
+  const isWord=item.type==='word';
+  const qText=isWord?item.k:(item.pattern||item.title);
+  const qHint=isWord?(item.r||''):(item.title||'');
+  const correctAns=isWord?item.n:item.meaning;
+  const others=quizAllItems.filter(x=>x.id!==item.id).sort(()=>Math.random()-0.5).slice(0,3);
+  const opts=[{t:correctAns,c:true},...others.map(o=>({t:o.type==='word'?o.n:o.meaning,c:false}))].sort(()=>Math.random()-0.5);
+  quizAnswered=false;
+  body.innerHTML=`<div class="quiz-q-card"><div class="quiz-word">${qText}</div><div class="quiz-hint">${qHint}</div></div><div class="quiz-opts">${opts.map((o,i)=>`<div class="qopt" id="qo${i}" onclick="checkQ(${i},${o.c},${JSON.stringify(correctAns)})">${o.t}</div>`).join('')}</div><div class="quiz-fb" id="q-fb"></div><button class="quiz-nxt" id="q-nxt" style="display:none" onclick="nextQ()">Aglo prashna →</button>`;
+}
+
+function checkQ(i,correct,ans){
+  if(quizAnswered)return;quizAnswered=true;
+  if(correct){quizScore.c++;document.getElementById('q-fb').textContent='✅ Thik chha!'}
+  else{quizScore.w++;document.getElementById('q-fb').textContent='❌ Galat! Thik: '+ans;document.querySelectorAll('.qopt').forEach(el=>{if(el.textContent===ans)el.classList.add('correct')})}
+  document.getElementById('qo'+i).classList.add(correct?'correct':'wrong');
+  updateQScore();document.getElementById('q-nxt').style.display='block';
+}
+function nextQ(){quizIdx++;renderQuizQ()}
+function updateQScore(){document.getElementById('qs-c').textContent='✓ '+quizScore.c;document.getElementById('qs-w').textContent='✗ '+quizScore.w;document.getElementById('qs-t').textContent=quizIdx+'/'+quizItems.length}
+
+function startMatch(){
+  const words=load('words',curCh);
+  if(words.length<3){document.getElementById('match-body').innerHTML='<div class="empty">Match game ko lagi 3+ words chaahiyo!</div>';return}
+  matchItems=[...words].sort(()=>Math.random()-0.5).slice(0,Math.min(6,words.length));
+  matchMatched=new Set();matchSelIdx=null;matchSelSide=null;
+  document.getElementById('ms-c').textContent='✓ 0';
+  document.getElementById('ms-t').textContent='0/'+matchItems.length+' matched';
+  renderMatch();
+}
+
+function renderMatch(){
+  const ks=[...matchItems.map((w,i)=>({text:w.k,idx:i}))].sort(()=>Math.random()-0.5);
+  const ns=[...matchItems.map((w,i)=>({text:w.n,idx:i}))].sort(()=>Math.random()-0.5);
+  const body=document.getElementById('match-body');
+  const mkClass=i=>matchMatched.has(i)?'match-item matched':(matchSelIdx===i&&matchSelSide==='k'?'match-item sel':'match-item');
+  const mnClass=i=>matchMatched.has(i)?'match-item matched':(matchSelIdx===i&&matchSelSide==='n'?'match-item sel':'match-item');
+  body.innerHTML=`<div class="match-grid">${ks.map(k=>`<div class="${mkClass(k.idx)}" id="mk${k.idx}" onclick="matchClick(${k.idx},'k')">${k.text}</div>`).join('')}${ns.map(n=>`<div class="${mnClass(n.idx)}" id="mn${n.idx}" onclick="matchClick(${n.idx},'n')">${n.text}</div>`).join('')}</div>${matchMatched.size===matchItems.length?'<div class="empty">🎉 Saabash! Sabai match bhayo!<br><button class="quiz-nxt" onclick="startMatch()" style="margin-top:12px">Pheri khelne</button></div>':''}`;
+}
+
+function matchClick(idx,side){
+  if(matchMatched.has(idx))return;
+  if(matchSelIdx===null){matchSelIdx=idx;matchSelSide=side;renderMatch();}
+  else if(matchSelIdx===idx&&matchSelSide!==side){
+    matchMatched.add(idx);
+    const c=matchMatched.size;
+    document.getElementById('ms-c').textContent='✓ '+c;
+    document.getElementById('ms-t').textContent=c+'/'+matchItems.length+' matched';
+    matchSelIdx=null;matchSelSide=null;renderMatch();
+  } else {
+    const wrongEl=document.getElementById((matchSelSide==='k'?'mk':'mn')+matchSelIdx);
+    if(wrongEl){wrongEl.classList.add('wrong-flash');setTimeout(()=>{wrongEl.classList.remove('wrong-flash');matchSelIdx=null;matchSelSide=null;renderMatch()},400);}
+    else{matchSelIdx=null;matchSelSide=null;renderMatch();}
+  }
+}
+
+function startType(){
+  const words=load('words',curCh);
+  if(!words.length){document.getElementById('type-body').innerHTML='<div class="empty">Words chhaina!</div>';return}
+  typeItems=[...words].sort(()=>Math.random()-0.5).slice(0,Math.min(8,words.length));
+  typeIdx=0;typeScore={c:0,w:0};typeAnswered=false;updateTScore();renderTypeQ();
+}
+
+function renderTypeQ(){
+  const body=document.getElementById('type-body');
+  if(typeIdx>=typeItems.length){
+    const pct=Math.round(typeScore.c/typeItems.length*100);
+    body.innerHTML=`<div class="quiz-done"><div class="qd-num">${typeScore.c}/${typeItems.length}</div><div class="qd-lbl">${pct}% thik!<br>${pct>=80?'🎉 Excellent!':pct>=50?'👍 Ramro!':'📚 Pheri try gara!'}</div><button class="quiz-nxt" onclick="startType()">Dobara khelne</button></div>`;
+    return;
+  }
+  const item=typeItems[typeIdx];typeAnswered=false;
+  body.innerHTML=`<div class="quiz-q-card"><div class="quiz-word">${item.k}</div><div class="quiz-hint">${item.r||''}</div></div><input class="type-input" id="type-in" placeholder="Nepali meaning type garnus..." onkeydown="if(event.key==='Enter')checkType()"><button class="type-check" onclick="checkType()">✓ Check</button><button class="type-reveal" onclick="revealType()">👁 Dekhaaunu</button><div class="quiz-fb" id="t-fb"></div><button class="quiz-nxt" id="t-nxt" style="display:none" onclick="nextType()">Aglo →</button>`;
+  setTimeout(()=>{const inp=document.getElementById('type-in');if(inp)inp.focus()},100);
+}
+
+function checkType(){
+  if(typeAnswered)return;
+  const val=(document.getElementById('type-in').value||'').trim().toLowerCase();
+  const ans=typeItems[typeIdx].n.toLowerCase();
+  typeAnswered=true;
+  if(val&&(ans.includes(val)||val.includes(ans.split('/')[0].trim()))){typeScore.c++;document.getElementById('t-fb').textContent='✅ Thik chha! — '+typeItems[typeIdx].n;}
+  else{typeScore.w++;document.getElementById('t-fb').textContent='❌ Galat! Thik: '+typeItems[typeIdx].n;}
+  updateTScore();document.getElementById('t-nxt').style.display='block';
+}
+function revealType(){if(typeAnswered)return;typeAnswered=true;typeScore.w++;document.getElementById('t-fb').textContent='Answer: '+typeItems[typeIdx].n;updateTScore();document.getElementById('t-nxt').style.display='block';}
+function nextType(){typeIdx++;renderTypeQ()}
+function updateTScore(){document.getElementById('ts-c').textContent='✓ '+typeScore.c;document.getElementById('ts-w').textContent='✗ '+typeScore.w;document.getElementById('ts-t').textContent=typeIdx+'/'+typeItems.length}
+
+renderHome();
+</script>
+</body>
+</html>
